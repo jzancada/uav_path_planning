@@ -1,3 +1,4 @@
+#%%
 # uav
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,9 +8,9 @@ Ts = 0.2
 
 class uav_class:
     # define class
-    def __init__(self, x0 = 0, x0_dot = 0):
-        self.x = x0
-        self.x_dot = x0_dot
+    def __init__(self, x_ini = 0, x_dot_ini = 0):
+        self.x = x_ini
+        self.x_dot = x_dot_ini
         self.u_lim = .4
         self.v_lim = 2.
         self.x0 = 1.
@@ -79,10 +80,10 @@ list_x=[]
 list_x_dot=[]
 list_u=[]
 # Cte de control
-print ("===============")
-print ("K         = %.3f" % uav.K)
-print ("x_dot lim = %.3f" % uav.x0_dot_lim)
-print ("===============")
+print ("==================")
+print ("K          = %.3f" % uav.K)
+print ("x0_dot_lim = %.3f" % uav.x0_dot_lim)
+print ("==================")
 
 # posicion requerida
 x_req = 0 
@@ -137,4 +138,4 @@ plt.savefig('test_4.png')
 plt.show()
 
 
-print list_u
+print "%.1f" % list_u
