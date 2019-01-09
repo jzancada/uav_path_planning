@@ -15,10 +15,10 @@ Ts = 0.2
 #clase
 class uav_class:
     # define class
-    def __init__(self, x0 = 0, x0_dot = 0):
+    def __init__(self, x0 = 0, x0_dot = 0, u_lim = 0.2):
         self.x = x0
         self.x_dot = x0_dot
-        self.u_lim = 1
+        self.u_lim = u_lim
 
     def next(self, u, Ts):
         self.x = self.x + self.x_dot*Ts
@@ -37,20 +37,26 @@ class uav_class:
         uTs = -self.x_dot -K*(e_x + self.x_dot*Ts) 
         u = uTs/Ts
         u = self.limita_u(u)
-        return u
+        sigma = K*self.x + self.x_dot 
+        return u, sigma
 
     def disp(self):
         print ('x=%.02f' % self.x, ', x_dot=%.02f' % self.x_dot)
 
 #%% 
 # crea arrays
-N = 100
+N = 1000
 x     = np.zeros((N,1),dtype=float)        
 x_dot = np.zeros((N,1),dtype=float)        
 u     = np.zeros((N,1),dtype=float)        
+sigma = np.zeros((N,1),dtype=float)        
 
+#limite U
+U = 0.2
+K = 0.316
 # creo un uav
-uav   = uav_class(-0.1,0)
+x0 = -200
+uav   = uav_class(x0,0, U)
 buque = uav_class(0,)
 
 #%% simulacion
@@ -60,8 +66,7 @@ x_dot[0] = uav.x_dot
 
 for k in range(0,x.size-1):
     # control
-    K = 1
-    u[k] = uav.control_x(0,K,Ts);
+    u[k], sigma[k] = uav.control_x(0,K,Ts);
     # next
     uav.next(u[k],Ts)
     # se guarada informacion
@@ -89,10 +94,30 @@ plt.grid()
 plt.draw()
 plt.savefig('test_2.png')
 
+# pos-vel    
+plt.figure()
+plt.plot(x,x_dot)
+plt.xlabel('x ')
+plt.ylabel('x_dot')
+plt.grid()
+# plt.xlim([0, 1])
+plt.draw()
+plt.savefig('test_2.png')
+
+# sigma
+plt.figure()
+plt.plot(sigma)
+plt.xlabel('sample')
+plt.ylabel('sigma')
+plt.grid()
+# plt.xlim([0, 1])
+plt.draw()
+plt.savefig('test_2.png')
+
 
 # u    
 plt.figure()
-plt.plot(x_dot)
+plt.plot(u)
 plt.xlabel('sample')
 plt.ylabel('u [m/s/s]')
 plt.grid()
