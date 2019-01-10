@@ -55,6 +55,7 @@ for k in range(40):
 print list_u
 
 # posicion    
+plt.figure()
 plt.plot(list_x)
 plt.xlabel('sample')
 plt.ylabel('x [m]')
@@ -64,7 +65,7 @@ plt.draw()
 plt.savefig('test_1.png')
 
 
-# posicion    
+# velocidad    
 plt.figure()
 plt.plot(list_x_dot)
 plt.xlabel('sample')
